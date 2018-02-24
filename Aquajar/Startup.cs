@@ -6,11 +6,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Aquajar.Cola;
+using Aquajar.Solicitudes;
+using System.Runtime.InteropServices;
 
 namespace Aquajar
 {
     public class Startup
     {
+        public static ColaCircular<Solicitud> cq;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,7 +43,15 @@ namespace Aquajar
 
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("defaut", "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            cq = new ColaCircular<Solicitud>(1000);
+            Parallel.Parallel p = new Parallel.Parallel();
+            Task tarea = new Task(() => p.run(cq));
+            tarea.Start();
         }
     }
 }
