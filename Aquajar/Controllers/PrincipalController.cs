@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Aquajar.Solicitudes;
+using System.Threading;
+
 namespace Aquajar.Controllers
 {
     public class PrincipalController : Controller
@@ -27,9 +29,17 @@ namespace Aquajar.Controllers
         [HttpGet]
         public IActionResult conseguirInfo()
         {
-            Startup.cq.poner(new Info(2));
-            // Wait for response
-            // Return View
+            Info info = new Info(1);
+            Startup.e.resolver(info);
+
+            int i = 0;
+            while (!info.listo() && i<10)
+            {
+                Thread.Sleep(500);
+                i++;
+            }
+
+
             return View();
         }
 

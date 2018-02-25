@@ -4,13 +4,18 @@ namespace Aquajar.Solicitudes
 {
     public class Accion : Solicitud
     {
-        private int actuatorId { get;}
-        private double value { get;}
+        private int actuatorId { get; set; }
+        private double value { get; set; }
 
-        public Accion(int usuario, int actuatorId, double value) : base(usuario)
+        public Accion(int actuatorId, double value)
         {
             this.actuatorId = actuatorId;
             this.value = value;
+        }
+
+        public string toString()
+        {
+            return "#" + base.usuario + "#" + actuatorId + "#" + value;
         }
     }
 }

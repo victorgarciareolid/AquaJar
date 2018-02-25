@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,13 +8,26 @@ namespace Aquajar.Solicitudes
 {
     public abstract class Solicitud
     {
-        protected int usuario { get;}
-        protected bool completada { get;}
+        protected static int numUsuarios = 0;
+        protected int usuario { get; set; }
+        protected bool completada { get; set; }
+        protected HttpContext contexto{ get; }
 
-        public Solicitud(int usuario)
+        public Solicitud()
         {
-            this.usuario = usuario;
-            this.completada = false;
+            completada = false;
+            numUsuarios++;
+            this.usuario = numUsuarios;
+        }
+
+        public void completar()
+        {
+            this.completada = true;
+        }
+
+        public bool listo()
+        {
+            return completada;
         }
     }
 }

@@ -7,9 +7,16 @@ namespace Aquajar.Solicitudes
 {
     public class Info : Solicitud
     {
-        public Info(int usuario) : base(usuario)
-        {
+        private int sensorId { get; set; }
 
+        public Info(int sensorId)
+        {
+            this.sensorId = sensorId;
+        }
+
+        public string toString()
+        {
+            return "#" + base.usuario + "#" + sensorId;
         }
     }
 }
