@@ -26,7 +26,6 @@ namespace Aquajar.Cola
         public override T sacar()
         {
             if (vacio()) throw new Exception("Cola vacia");
-
             T elemento = p[f];
             f = (f + 1) % N;
             numElementos -= 1;

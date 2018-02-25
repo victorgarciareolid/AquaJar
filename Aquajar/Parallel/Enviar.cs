@@ -35,9 +35,9 @@ namespace Aquajar.Parallel
 
                 Byte[] recepcion = new Byte[256];
                 string data;
-                Console.WriteLine("Esperando conexión...");
+                System.Diagnostics.Debug.WriteLine("Esperando conexión...");
                 cliente = server.AcceptTcpClient();
-                Console.WriteLine("Conectado!");
+                System.Diagnostics.Debug.WriteLine("Conectado!");
                 while (true)
                 {
                     Stream s = cliente.GetStream();
@@ -47,24 +47,26 @@ namespace Aquajar.Parallel
                     // Si la cola de envio esta vacia -> Esperar.
                     while (enviar.vacio())
                     {
-                        Console.WriteLine("Esperando Solicitudes!");
+                        System.Diagnostics.Debug.Print("Esperando Solicitudes!");
                         Thread.Sleep(1500);
                     }
 
                     // Procesar Solictiud (Enviar)
                     Solicitud sol = enviar.sacar();
-                    data = enviar.sacar().ToString();
+                    data = sol.toString();
                     byte[] datab = System.Text.Encoding.ASCII.GetBytes(data);
                     s.Write(datab, 0, datab.Length);
-
+                    System.Diagnostics.Debug.Print("Enviando: {0}", sol.toString());
                     // Esperar Recepción
                     byte[] datar = new byte[256];
                     s.Read(datar, 0, datar.Length);
-
+                    
                     // Procesar Resultado
                     data = System.Text.Encoding.ASCII.GetString(datar);
-                    sol.completar();
+                    System.Diagnostics.Debug.Print("Recibido: {0}", data);
+
                     sol.res.parseResultado(data);
+                    sol.completar();
                     cliente.Close();
                 }
                 
@@ -85,7 +87,15 @@ namespace Aquajar.Parallel
 
         public void resolver(Solicitud sol)
         {
-            enviar.poner(sol);
+            if (enviar.lleno())
+            {
+                Console.WriteLine("No se pueden hacer más solicilictudes!! Pruebas más tarde");
+            }
+            else
+            {
+                enviar.poner(sol);
+            }
+            
         }
 
 

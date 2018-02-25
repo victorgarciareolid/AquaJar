@@ -33,16 +33,18 @@ namespace Aquajar.Controllers
             Startup.e.resolver(info);
 
             int i = 0;
-            while (!info.listo() && i<10)
+            
+            while (!info.listo() && i<1000)
             {
                 Thread.Sleep(500);
                 i++;
+                
             }
-
             if (!info.listo())
             {
                 return "Not Found";
             }
+
             return info.res.value.ToString();
         }
 

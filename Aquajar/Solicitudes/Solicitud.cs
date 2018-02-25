@@ -19,6 +19,7 @@ namespace Aquajar.Solicitudes
             completada = false;
             numUsuarios++;
             this.usuario = numUsuarios;
+            this.res = new Resultado();
         }
 
         public void completar()
@@ -29,6 +30,8 @@ namespace Aquajar.Solicitudes
         public bool listo()
         {
             return completada;
-        } 
+        }
+
+        public abstract string toString();
     }
 }

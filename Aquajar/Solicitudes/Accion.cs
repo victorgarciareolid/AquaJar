@@ -13,7 +13,7 @@ namespace Aquajar.Solicitudes
             this.value = value;
         }
 
-        public string toString()
+        public override string toString()
         {
             return "#" + base.usuario + "#" + actuatorId + "#" + value;
         }

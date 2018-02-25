@@ -9,12 +9,13 @@ namespace Aquajar.Solicitudes
     {
         private int sensorId { get; set; }
 
+
         public Info(int sensorId)
         {
             this.sensorId = sensorId;
         }
 
-        public string toString()
+        public override string toString()
         {
             return "#" + base.usuario + "#" + sensorId;
         }

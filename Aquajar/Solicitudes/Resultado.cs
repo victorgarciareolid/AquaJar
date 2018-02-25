@@ -11,16 +11,17 @@ namespace Aquajar.Solicitudes
 
         public void parseResultado(string data)
         {
-            string[] info = data.Split("#");
+            System.Diagnostics.Debug.WriteLine(data);
+            string[] info = data.Split('#');
             if (info.Length < 3) throw new Exception("Dato Invalido! - Length inferior a 3");
 
             try
             {
-                this.value = Double.Parse(info[3]);
+                value = Double.Parse(info[3].Replace('.', ','));
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error de Parseo!");
+                System.Diagnostics.Debug.WriteLine("Error de Parseo!");
             }
 
         }
