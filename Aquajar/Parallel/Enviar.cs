@@ -15,15 +15,14 @@ namespace Aquajar.Parallel
     public class Enviar
     {
         ColaCircular<Solicitud> enviar;
-        ColaCircular<Resultado> recibir;
         TcpListener server;
         IPAddress local = IPAddress.Parse("127.0.0.1");
         Int32 puerto = 13000;
+        TcpClient cliente;
 
-        public Enviar(ColaCircular<Resultado> recibir)
+        public Enviar()
         {
             enviar = new ColaCircular<Solicitud>(1000);
-            this.recibir = recibir;
         }
 
         public void run()
@@ -36,17 +35,14 @@ namespace Aquajar.Parallel
 
                 Byte[] recepcion = new Byte[256];
                 string data;
-
+                Console.WriteLine("Esperando conexión...");
+                cliente = server.AcceptTcpClient();
+                Console.WriteLine("Conectado!");
                 while (true)
                 {
-                    Console.WriteLine("Esperando conexión...");
-                    TcpClient cliente = server.AcceptTcpClient();
-                    Console.WriteLine("Conectado!");
-
                     Stream s = cliente.GetStream();
 
                     data = null;
-                    int i;
 
                     // Si la cola de envio esta vacia -> Esperar.
                     while (enviar.vacio())
@@ -56,6 +52,7 @@ namespace Aquajar.Parallel
                     }
 
                     // Procesar Solictiud (Enviar)
+                    Solicitud sol = enviar.sacar();
                     data = enviar.sacar().ToString();
                     byte[] datab = System.Text.Encoding.ASCII.GetBytes(data);
                     s.Write(datab, 0, datab.Length);
@@ -66,25 +63,11 @@ namespace Aquajar.Parallel
 
                     // Procesar Resultado
                     data = System.Text.Encoding.ASCII.GetString(datar);
-                    Resultado res = new Resultado();
-                    res.parseResultado(data);
-                    recibir.poner(res);
-
-                    /*
-                    while ((i = s.Read(recepcion, 0, recepcion.Length)) != 0) {
-                        data = System.Text.Encoding.ASCII.GetString(recepcion, 0, i);
-                        Console.WriteLine("Recibido: {0}", data);
-
-                        data = data.ToLower();
-                        string msge = "lo que quiiero enviar al rpi";
-                        byte[] msgr = System.Text.Encoding.ASCII.GetBytes(msge);
-                        s.Write(msgr, 0, msgr.Length);
-                        Console.WriteLine("Enviado: {0}", msgr);
-                    }
-                    */
-
-                    // cliente.Close();
+                    sol.completar();
+                    sol.res.parseResultado(data);
+                    cliente.Close();
                 }
+                
             }
             catch (Exception e)
             {
@@ -92,10 +75,11 @@ namespace Aquajar.Parallel
             }
             finally
             {
+                cliente.Close();
                 server.Stop();
             }
 
-
+            
             // Ir enviando solicitudes de enviar y poner recepciones en la cola circular recibir 
         }
 

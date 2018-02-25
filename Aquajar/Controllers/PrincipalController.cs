@@ -27,7 +27,7 @@ namespace Aquajar.Controllers
         }
 
         [HttpGet]
-        public IActionResult conseguirInfo()
+        public string conseguirInfo()
         {
             Info info = new Info(1);
             Startup.e.resolver(info);
@@ -39,8 +39,11 @@ namespace Aquajar.Controllers
                 i++;
             }
 
-
-            return View();
+            if (!info.listo())
+            {
+                return "Not Found";
+            }
+            return info.res.value.ToString();
         }
 
         [HttpPost]

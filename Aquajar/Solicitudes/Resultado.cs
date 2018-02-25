@@ -7,8 +7,7 @@ namespace Aquajar.Solicitudes
 {
     public class Resultado
     {
-        private Solicitud sol { get; set; }
-        private double value { get; set; }
+        public double value { get; set; }
 
         public void parseResultado(string data)
         {
@@ -17,7 +16,6 @@ namespace Aquajar.Solicitudes
 
             try
             {
-                sol.completar();
                 this.value = Double.Parse(info[3]);
             }
             catch (Exception e)

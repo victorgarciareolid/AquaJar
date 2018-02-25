@@ -15,8 +15,8 @@ namespace Aquajar
 {
     public class Startup
     {
-        public static Recibir r;
         public static Enviar e;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -50,12 +50,9 @@ namespace Aquajar
                 routes.MapRoute("defaut", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            r = new Recibir();
-            e = new Enviar(r.recibir);
+            e = new Enviar();
             Task tarea1 = new Task(new Action(e.run));
-            Task tarea2 = new Task(new Action(r.run));
             tarea1.Start();
-            tarea2.Start();
         }
     }
 }

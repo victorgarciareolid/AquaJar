@@ -12,6 +12,7 @@ namespace Aquajar.Solicitudes
         protected int usuario { get; set; }
         protected bool completada { get; set; }
         protected HttpContext contexto{ get; }
+        public Resultado res { get; set; }
 
         public Solicitud()
         {
@@ -28,6 +29,6 @@ namespace Aquajar.Solicitudes
         public bool listo()
         {
             return completada;
-        }
+        } 
     }
 }
