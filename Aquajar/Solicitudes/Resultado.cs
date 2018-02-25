@@ -17,7 +17,7 @@ namespace Aquajar.Solicitudes
 
             try
             {
-                value = Double.Parse(info[3].Replace('.', ','));
+                value = Double.Parse(info[info.Length-1].Replace('.', ','));
             }
             catch (Exception e)
             {

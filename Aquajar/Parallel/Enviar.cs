@@ -67,7 +67,7 @@ namespace Aquajar.Parallel
 
                     sol.res.parseResultado(data);
                     sol.completar();
-                    cliente.Close();
+                    Solicitud.numUsuarios -= 1;
                 }
                 
             }

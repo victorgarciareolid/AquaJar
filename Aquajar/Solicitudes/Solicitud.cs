@@ -8,7 +8,7 @@ namespace Aquajar.Solicitudes
 {
     public abstract class Solicitud
     {
-        protected static int numUsuarios = 0;
+        public static int numUsuarios = 0;
         protected int usuario { get; set; }
         protected bool completada { get; set; }
         protected HttpContext contexto{ get; }
@@ -17,7 +17,7 @@ namespace Aquajar.Solicitudes
         public Solicitud()
         {
             completada = false;
-            numUsuarios++;
+            Solicitud.numUsuarios += 1;
             this.usuario = numUsuarios;
             this.res = new Resultado();
         }
